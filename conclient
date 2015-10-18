@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<netinet/in.h>
+int main()
+{
+	struct sockaddr_in server;
+	char msg[1000],recv_msg[1000];
+	int bytes_received,sock;
+	struct hostent *host;
+	host=gethostbyname("127.0.0.1");
+	if((sock=socket(AF_INET,SOCK_STREAM,0)==-1)
+	{
+		perror("socket cannot be created\n");
+		exit(1);
+
+	}
+	server.sin_addr= *((struct in_addr*)host->h_addr);
+	server.sin_family=AF_INET;
+	server.sin_port=htons(3548);
+	bzero(&(server.sin_zero),8);
+	fflush(stdout);
+	if(connect(sock,(struct sockaddr*)&server,sizeof(struct sockaddr))==-1)
+	{
+		perror("connection error\n");
+		exit(0);
+	}
+	while(1)
+	{
+		printf("\nenter your message and enter q to quit\n");
+		gets(msg);
+ 		if(strcmp(msg,"q")==0)
+		{
+			send(sock,msg,strlen(msg),0);
+			break;
+		}
+		send(sock,msg,strlen(msg),0);
+		printf("\nclient=%s",msg);
+		bytes_received=recv(sock,recv_msg,1024,0);
+		recv_msg[bytes_received]='\0';
+		printf("\nserver : %s",recv_msg);
+	}
+	close(sock);
+}
+
