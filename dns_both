@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <errno.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main(int argc, char *argv[])
+{
+    int i;
+    struct hostent *he;
+    char buff[100];
+    struct in_addr addr;
+
+
+    if ((he = gethostbyname(argv[1])) == NULL) {  // get the host info
+        herror("gethostbyname");
+        return 2;
+    }
+i=0;
+while(he->h_addr_list[i])
+{
+   inet_ntop(AF_INET,he->h_addr_list[i],buff,sizeof(buff));
+   printf("%s",buff);
+++i;
+}
+	inet_aton(argv[2],&addr);
+	he = gethostbyaddr(&addr,sizeof(addr),AF_INET);
+
+
+	printf("\n Host name for the Ip addrss is %s ",he->h_name);
+
+    return 0;
+}
