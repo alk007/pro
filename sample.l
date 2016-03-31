@@ -15,7 +15,3 @@ yylex();
 printf("THERE ARE %d words\n",wordcount);
 return 0;
 }
-
-
-
-a[a-z]*d {}
